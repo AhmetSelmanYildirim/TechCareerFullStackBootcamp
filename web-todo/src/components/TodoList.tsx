@@ -4,7 +4,6 @@ import { TodoContext } from "../context/TodoContext";
 
 function TodoList() {
   const { todoList } = useContext(TodoContext);
-  console.log("todoList :>> ", todoList);
   const statusButtonStyle = {
     backgroundColor: "blue",
     padding: "10px",
