@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Todo from "./Todo";
 import { TodoContext } from "../context/TodoContext";
+import axios from "axios";
 
 function TodoList() {
   const { todoList } = useContext(TodoContext);
@@ -18,6 +19,16 @@ function TodoList() {
     cursor: "pointer",
     borderRadius: "6px",
   };
+
+  const deleteDoneTasks = () => {
+    axios.delete(`http://localhost:4000/api/todo/delete/completed`);
+    window.location.reload();
+  };
+  const deleteAllTasks = () => {
+    axios.delete(`http://localhost:4000/api/todo/delete/all`);
+    window.location.reload();
+  };
+
   return (
     <div
       style={{
@@ -50,8 +61,12 @@ function TodoList() {
           marginTop: "20px",
         }}
       >
-        <div style={deleteButtonStyle}>Delete done tasks</div>
-        <div style={deleteButtonStyle}>Delete all tasks</div>
+        <div style={deleteButtonStyle} onClick={() => deleteDoneTasks()}>
+          Delete done tasks
+        </div>
+        <div style={deleteButtonStyle} onClick={() => deleteAllTasks()}>
+          Delete all tasks
+        </div>
       </div>
     </div>
   );
