@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Todo from "./Todo";
+import { TodoContext } from "../context/TodoContext";
 
 function TodoList() {
+  const { todoList } = useContext(TodoContext);
+  console.log("todoList :>> ", todoList);
   const statusButtonStyle = {
     backgroundColor: "blue",
     padding: "10px",
@@ -37,7 +40,9 @@ function TodoList() {
         <div style={statusButtonStyle}>Done</div>
         <div style={statusButtonStyle}>Todo</div>
       </div>
-      <Todo></Todo>
+      {todoList.map((todo, index) => (
+        <Todo key={todo.title + index} todo={todo}></Todo>
+      ))}
       <div
         style={{
           display: "flex",
