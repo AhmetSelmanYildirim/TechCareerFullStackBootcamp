@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/")
 public class TodoController {
     @Autowired
     private TodoService todoService;
-
     @PostMapping("/api/todo")
     public ResponseEntity<Todo> saveTodo (@RequestBody Todo todo){
         Todo todoObject = todoService.saveTodo(todo);
