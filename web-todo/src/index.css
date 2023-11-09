@@ -1,4 +1,4 @@
-:root {
+ :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -13,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
+/*
 a {
   font-weight: 500;
   color: #646cff;
@@ -27,8 +27,6 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -66,4 +64,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
