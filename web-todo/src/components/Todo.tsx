@@ -33,12 +33,32 @@ function Todo({ todo }) {
       title: todo.title,
       completed: !todoCopy.completed,
     });
-    // TODO todoCopy.completed değiştiyse update isteği at
+
     axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
+      id: todo.id,
       title: todo.title,
       completed: !todoCopy.completed,
     });
   };
+
+  const updateTodoTitle = () => {
+    const newTitle = prompt("Reset title: ");
+    setTodoCopy({
+      id: todo.id,
+      title: newTitle,
+      completed: todoCopy.completed,
+    });
+    if (newTitle) {
+      axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
+        id: todo.id,
+        title: newTitle,
+        completed: todoCopy.completed,
+      });
+    } else {
+      alert("title cannot be empty");
+    }
+  };
+
   return (
     <div
       style={{
@@ -49,7 +69,7 @@ function Todo({ todo }) {
       }}
     >
       <div className="todoTitle" style={checkStyle}>
-        {todo.title}
+        {todoCopy.title}
       </div>
       <div
         className="icons"
@@ -65,7 +85,12 @@ function Todo({ todo }) {
           type="checkbox"
           defaultChecked={isChecked()}
         />
-        <svg style={buttonStyle} fill={"orange"} viewBox="0 0 512 512">
+        <svg
+          style={buttonStyle}
+          onClick={() => updateTodoTitle()}
+          fill={"orange"}
+          viewBox="0 0 512 512"
+        >
           <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
         </svg>
         <svg style={buttonStyle} fill={"red"} viewBox="0 0 448 512">
