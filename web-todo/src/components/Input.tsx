@@ -3,9 +3,9 @@ import React, { useState } from "react";
 function Input() {
   const [todo, setTodo] = useState("");
 
-  const addNewTodo = () => {
+  const addNewTodo = async () => {
     if (todo) {
-      axios.post("http://localhost:4000/api/todo", {
+      await axios.post("http://localhost:4000/api/todo", {
         title: todo,
         completed: false,
       });

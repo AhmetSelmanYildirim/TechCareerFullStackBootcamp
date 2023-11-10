@@ -14,6 +14,7 @@ export const TodoProvider = ({ children }: { children: any }) => {
   }, []);
   const value: any = {
     todoList,
+    setTodoList,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

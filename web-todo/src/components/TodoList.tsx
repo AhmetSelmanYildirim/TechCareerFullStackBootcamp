@@ -1,10 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Todo from "./Todo";
 import { TodoContext } from "../context/TodoContext";
 import axios from "axios";
 
 function TodoList() {
-  const { todoList } = useContext(TodoContext);
+  const { todoList, setTodoList } = useContext(TodoContext);
+
+  const [status, setStatus] = useState("all");
+
   const statusButtonStyle = {
     backgroundColor: "blue",
     padding: "10px",
@@ -20,9 +23,8 @@ function TodoList() {
     borderRadius: "6px",
   };
 
-  const deleteDoneTasks = () => {
-    axios.delete(`http://localhost:4000/api/todo/delete/completed`);
-    window.location.reload();
+  const deleteDoneTasks = async () => {
+    await axios.delete(`http://localhost:4000/api/todo/delete/completed`);
   };
   const deleteAllTasks = () => {
     axios.delete(`http://localhost:4000/api/todo/delete/all`);
@@ -46,13 +48,32 @@ function TodoList() {
           marginBottom: "20px",
         }}
       >
-        <div style={statusButtonStyle}>All</div>
-        <div style={statusButtonStyle}>Done</div>
-        <div style={statusButtonStyle}>Todo</div>
+        <div onClick={() => setStatus("all")} style={statusButtonStyle}>
+          All
+        </div>
+        <div onClick={() => setStatus("done")} style={statusButtonStyle}>
+          Done
+        </div>
+        <div onClick={() => setStatus("todo")} style={statusButtonStyle}>
+          Todo
+        </div>
       </div>
-      {todoList.map((todo, index) => (
-        <Todo key={todo.title + index} todo={todo}></Todo>
-      ))}
+      {status === "all"
+        ? todoList.map((todo, index) => (
+            <Todo key={todo.title + index} todo={todo}></Todo>
+          ))
+        : status === "done"
+        ? todoList
+            .filter((todo) => todo.completed)
+            .map((todo, index) => (
+              <Todo key={todo.title + index} todo={todo}></Todo>
+            ))
+        : todoList
+            .filter((todo) => !todo.completed)
+            .map((todo, index) => (
+              <Todo key={todo.title + index} todo={todo}></Todo>
+            ))}
+
       <div
         style={{
           display: "flex",

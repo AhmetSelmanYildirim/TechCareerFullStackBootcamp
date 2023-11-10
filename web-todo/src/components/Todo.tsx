@@ -28,21 +28,21 @@ function Todo({ todo }) {
     }
   };
 
-  const checkTodo = (todo) => {
+  const checkTodo = async (todo) => {
     setTodoCopy({
       id: todo.id,
       title: todo.title,
       completed: !todoCopy.completed,
     });
 
-    axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
+    await axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
       id: todo.id,
       title: todo.title,
       completed: !todoCopy.completed,
     });
   };
 
-  const updateTodoTitle = () => {
+  const updateTodoTitle = async () => {
     const newTitle = prompt("Reset title: ");
     setTodoCopy({
       id: todo.id,
@@ -50,7 +50,7 @@ function Todo({ todo }) {
       completed: todoCopy.completed,
     });
     if (newTitle) {
-      axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
+      await axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
         id: todo.id,
         title: newTitle,
         completed: todoCopy.completed,
@@ -60,9 +60,9 @@ function Todo({ todo }) {
     }
   };
 
-  const deleteTodo = () => {
+  const deleteTodo = async () => {
     setDeleted(true);
-    axios.delete(`http://localhost:4000/api/todo/delete/${todo.id}`);
+    await axios.delete(`http://localhost:4000/api/todo/delete/${todo.id}`);
   };
 
   return (
