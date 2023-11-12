@@ -6,15 +6,19 @@ export const TodoContext = createContext(null);
 export const TodoProvider = ({ children }: { children: any }) => {
   const [todoList, setTodoList] = useState([{}]);
 
+  const getTodos = async () => {
+    const { data } = await axios.get("http://localhost:4000/api/todo");
+    setTodoList(data);
+  };
+
   useEffect(() => {
-    (async () => {
-      const { data } = await axios.get("http://localhost:4000/api/todo");
-      setTodoList(data);
-    })();
+    getTodos();
   }, []);
+
   const value: any = {
     todoList,
     setTodoList,
+    getTodos,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

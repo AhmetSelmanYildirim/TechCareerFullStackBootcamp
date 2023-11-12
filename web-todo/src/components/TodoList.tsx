@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Todo from "./Todo";
 import { TodoContext } from "../context/TodoContext";
 import axios from "axios";
 
 function TodoList() {
-  const { todoList, setTodoList } = useContext(TodoContext);
-
+  const { todoList, setTodoList, getTodos } = useContext(TodoContext);
   const [status, setStatus] = useState("all");
 
   const statusButtonStyle = {
@@ -24,11 +23,14 @@ function TodoList() {
   };
 
   const deleteDoneTasks = async () => {
-    await axios.delete(`http://localhost:4000/api/todo/delete/completed`);
+    axios
+      .delete(`http://localhost:4000/api/todo/delete/completed`)
+      .then((response) => response.status === 202 && getTodos());
   };
   const deleteAllTasks = () => {
-    axios.delete(`http://localhost:4000/api/todo/delete/all`);
-    window.location.reload();
+    axios
+      .delete(`http://localhost:4000/api/todo/delete/all`)
+      .then((response) => response.status === 202 && setTodoList([{}]));
   };
 
   return (
@@ -58,21 +60,27 @@ function TodoList() {
           Todo
         </div>
       </div>
-      {status === "all"
-        ? todoList.map((todo, index) => (
+      {todoList.length > 0 ? (
+        status === "all" ? (
+          todoList.map((todo, index) => (
             <Todo key={todo.title + index} todo={todo}></Todo>
           ))
-        : status === "done"
-        ? todoList
+        ) : status === "done" ? (
+          todoList
             .filter((todo) => todo.completed)
             .map((todo, index) => (
               <Todo key={todo.title + index} todo={todo}></Todo>
             ))
-        : todoList
+        ) : (
+          todoList
             .filter((todo) => !todo.completed)
             .map((todo, index) => (
               <Todo key={todo.title + index} todo={todo}></Todo>
-            ))}
+            ))
+        )
+      ) : (
+        <div>Todo list is empty</div>
+      )}
 
       <div
         style={{
