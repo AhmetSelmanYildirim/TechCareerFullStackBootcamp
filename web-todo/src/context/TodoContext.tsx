@@ -15,10 +15,26 @@ export const TodoProvider = ({ children }: { children: any }) => {
     getTodos();
   }, []);
 
+  const onUpdateTodo = (updatedTodo) => {
+    setTodoList((prevTodoList) => {
+      return prevTodoList.map((todo) =>
+        todo.id === updatedTodo.id ? { ...updatedTodo } : todo
+      );
+    });
+  };
+
+  const onDeleteTodo = (id) => {
+    setTodoList((prevTodoList) => {
+      return prevTodoList.filter((todo) => todo.id !== id);
+    });
+  };
+
   const value: any = {
     todoList,
     setTodoList,
     getTodos,
+    onUpdateTodo,
+    onDeleteTodo,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

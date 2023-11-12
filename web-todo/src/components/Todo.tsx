@@ -1,19 +1,19 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { TodoContext } from "../context/TodoContext";
 
 function Todo({ todo }) {
-  const [todoCopy, setTodoCopy] = useState(todo);
+  const { onUpdateTodo, onDeleteTodo } = useContext(TodoContext);
   const [checkStyle, setCheckStyle] = useState({
-    textDecoration: todoCopy.completed ? "line-through" : "none",
-    color: todoCopy.completed ? "red" : "white",
+    textDecoration: todo.completed ? "line-through" : "none",
+    color: todo.completed ? "red" : "white",
   });
-  const [deleted, setDeleted] = useState(false);
   useEffect(() => {
     setCheckStyle({
-      textDecoration: todoCopy.completed ? "line-through" : "none",
-      color: todoCopy.completed ? "red" : "white",
+      textDecoration: todo.completed ? "line-through" : "none",
+      color: todo.completed ? "red" : "white",
     });
-  }, [todoCopy]);
+  }, [todo]);
 
   const buttonStyle = {
     cursor: "pointer",
@@ -29,46 +29,52 @@ function Todo({ todo }) {
   };
 
   const checkTodo = async (todo) => {
-    setTodoCopy({
-      id: todo.id,
-      title: todo.title,
-      completed: !todoCopy.completed,
-    });
-
-    await axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
-      id: todo.id,
-      title: todo.title,
-      completed: !todoCopy.completed,
-    });
+    axios
+      .put(`http://localhost:4000/api/todo/${todo.id}`, {
+        id: todo.id,
+        title: todo.title,
+        completed: !todo.completed,
+      })
+      .then((response) => {
+        response.data &&
+          onUpdateTodo({
+            ...todo,
+            completed: !todo.completed,
+          });
+      });
   };
 
   const updateTodoTitle = async () => {
     const newTitle = prompt("Reset title: ");
-    setTodoCopy({
-      id: todo.id,
-      title: newTitle,
-      completed: todoCopy.completed,
-    });
     if (newTitle) {
-      await axios.put(`http://localhost:4000/api/todo/${todo.id}`, {
-        id: todo.id,
-        title: newTitle,
-        completed: todoCopy.completed,
-      });
+      axios
+        .put(`http://localhost:4000/api/todo/${todo.id}`, {
+          id: todo.id,
+          title: newTitle,
+          completed: todo.completed,
+        })
+        .then((response) => {
+          response.data &&
+            onUpdateTodo({
+              ...todo,
+              title: newTitle,
+            });
+        });
     } else {
       alert("title cannot be empty");
     }
   };
 
   const deleteTodo = async () => {
-    setDeleted(true);
-    await axios.delete(`http://localhost:4000/api/todo/delete/${todo.id}`);
+    axios
+      .delete(`http://localhost:4000/api/todo/delete/${todo.id}`)
+      .then((response) => response.status === 202 && onDeleteTodo(todo.id));
   };
 
   return (
     <div
       style={{
-        display: deleted ? "none" : "flex",
+        display: "flex",
         justifyContent: "space-between",
         border: "1px #000 solid",
         padding: 15,
@@ -77,7 +83,7 @@ function Todo({ todo }) {
       }}
     >
       <div className="todoTitle" style={checkStyle}>
-        {todoCopy.title}
+        {todo.title}
       </div>
       <div
         className="icons"
@@ -95,7 +101,7 @@ function Todo({ todo }) {
         />
         <svg
           style={buttonStyle}
-          onClick={() => updateTodoTitle()}
+          onClick={updateTodoTitle}
           fill={"orange"}
           viewBox="0 0 512 512"
         >
@@ -103,7 +109,7 @@ function Todo({ todo }) {
         </svg>
         <svg
           style={buttonStyle}
-          onClick={() => deleteTodo()}
+          onClick={deleteTodo}
           fill={"red"}
           viewBox="0 0 448 512"
         >
