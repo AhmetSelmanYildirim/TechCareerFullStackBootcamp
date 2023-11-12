@@ -72,6 +72,8 @@ function Todo({ todo }) {
         justifyContent: "space-between",
         border: "1px #000 solid",
         padding: 15,
+        marginBottom: 3,
+        borderRadius: 5,
       }}
     >
       <div className="todoTitle" style={checkStyle}>

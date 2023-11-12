@@ -4,7 +4,7 @@ import TodoList from "../components/TodoList";
 
 function Homepage() {
   return (
-    <div style={{ width: "80%" }}>
+    <div style={{ width: "70%" }}>
       <Input></Input>
       <TodoList></TodoList>
     </div>
