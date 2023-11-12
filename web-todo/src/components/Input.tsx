@@ -1,18 +1,24 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { TodoContext } from "../context/TodoContext";
+
 function Input() {
   const [todo, setTodo] = useState("");
 
+  const { todoList, setTodoList } = useContext(TodoContext);
+
   const addNewTodo = async () => {
-    if (todo) {
-      await axios.post("http://localhost:4000/api/todo", {
-        title: todo,
-        completed: false,
-      });
-      window.location.reload();
-    } else {
-      alert("task cannot be empty!!!");
-    }
+    !todo
+      ? alert("task cannot be empty!!!")
+      : axios
+          .post("http://localhost:4000/api/todo", {
+            title: todo,
+            completed: false,
+          })
+          .then((response) => {
+            setTodoList([...todoList, response.data]);
+          })
+          .then(() => setTodo(""));
   };
 
   return (
