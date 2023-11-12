@@ -29,12 +29,25 @@ export const TodoProvider = ({ children }: { children: any }) => {
     });
   };
 
+  const deleteDoneTasks = async () => {
+    axios
+      .delete(`http://localhost:4000/api/todo/delete/completed`)
+      .then(async (response) => response.status === 202 && getTodos());
+  };
+  const deleteAllTasks = () => {
+    axios
+      .delete(`http://localhost:4000/api/todo/delete/all`)
+      .then(async (response) => response.status === 202 && (await getTodos()));
+  };
+
   const value: any = {
     todoList,
     setTodoList,
     getTodos,
     onUpdateTodo,
     onDeleteTodo,
+    deleteDoneTasks,
+    deleteAllTasks,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

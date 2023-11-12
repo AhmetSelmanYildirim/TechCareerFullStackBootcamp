@@ -20,14 +20,6 @@ function Todo({ todo }) {
     width: "15px",
   };
 
-  const isChecked = () => {
-    if (todo.completed) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const checkTodo = async (todo) => {
     axios
       .put(`http://localhost:4000/api/todo/${todo.id}`, {
@@ -97,7 +89,7 @@ function Todo({ todo }) {
           onClick={() => checkTodo(todo)}
           style={buttonStyle}
           type="checkbox"
-          defaultChecked={isChecked()}
+          defaultChecked={todo.completed}
         />
         <svg
           style={buttonStyle}

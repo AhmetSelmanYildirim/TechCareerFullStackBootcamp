@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
 import Todo from "./Todo";
 import { TodoContext } from "../context/TodoContext";
-import axios from "axios";
 
 function TodoList() {
-  const { todoList, setTodoList, getTodos } = useContext(TodoContext);
+  const { todoList, deleteDoneTasks, deleteAllTasks } = useContext(TodoContext);
   const [status, setStatus] = useState("all");
 
   const statusButtonStyle = {
@@ -20,17 +19,6 @@ function TodoList() {
     width: "40%",
     cursor: "pointer",
     borderRadius: "6px",
-  };
-
-  const deleteDoneTasks = async () => {
-    axios
-      .delete(`http://localhost:4000/api/todo/delete/completed`)
-      .then((response) => response.status === 202 && getTodos());
-  };
-  const deleteAllTasks = () => {
-    axios
-      .delete(`http://localhost:4000/api/todo/delete/all`)
-      .then((response) => response.status === 202 && setTodoList([{}]));
   };
 
   return (
