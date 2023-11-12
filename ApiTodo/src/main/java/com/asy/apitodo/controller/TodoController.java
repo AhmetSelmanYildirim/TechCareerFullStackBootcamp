@@ -34,9 +34,9 @@ public class TodoController {
     }
 
     @PutMapping("/api/todo/{id}")
-    public ResponseEntity<Todo> getTodoById(@PathVariable("id") Long id, @RequestBody Todo todo) {
+    public ResponseEntity<Todo> updateTodo(@PathVariable("id") Long id, @RequestBody Todo todo) {
         Todo todoObject = todoService.updateTodo(id,todo);
-        return new ResponseEntity<Todo>(todoObject, HttpStatus.FOUND);
+        return new ResponseEntity<Todo>(todoObject, HttpStatus.OK);
     }
 
     @DeleteMapping("/api/todo/delete/{id}")
