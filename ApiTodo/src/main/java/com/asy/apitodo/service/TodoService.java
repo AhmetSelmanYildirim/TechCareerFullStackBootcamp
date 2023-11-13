@@ -21,18 +21,28 @@ public class TodoService {
         return todoRepository.findAll();
     }
     public Todo findTodoById(Long todoId){
-        return todoRepository.findById(todoId).get();
+        if(todoRepository.existsById(todoId)){
+            return todoRepository.findById(todoId).get();
+        }else{
+            throw new TodoNotFoundException("Todo not found with id: " + todoId);
+        }
     }
     public Todo updateTodo(Long todoId, Todo todo){
         if (todoRepository.existsById(todoId)) {
+            System.out.println("if");
             todo.setId(todoId);
             return todoRepository.save(todo);
         } else {
+            System.out.println("else");
             throw new TodoNotFoundException("Todo not found with id: " + todoId);
         }
     }
     public void deleteTodoById(Long todoId){
-        todoRepository.deleteById(todoId);
+        if(todoRepository.existsById(todoId)){
+            todoRepository.deleteById(todoId);
+        }else{
+            throw new TodoNotFoundException("Todo not found with id: " + todoId);
+        }
     }
     public void deleteAll(){
         todoRepository.deleteAll();
