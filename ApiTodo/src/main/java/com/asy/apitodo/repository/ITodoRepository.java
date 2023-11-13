@@ -11,6 +11,7 @@ import java.util.List;
 public interface ITodoRepository extends JpaRepository<Todo,Long> {
     @Transactional
     @Modifying
+    // COMPLETED TODOLARI SİLMEK İÇİN KENDİ SORGUMU YAZDIM
     @Query("DELETE FROM Todo t WHERE t.completed = true")
     void deleteCompletedTodos();
 
