@@ -6,11 +6,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -23,13 +21,7 @@ public class TodoController {
     //CREATE
     // http://localhost:4000/api/todo/
     @PostMapping()
-    public ResponseEntity<?> saveTodo (@RequestBody @Valid Todo todo, BindingResult result){
-        if (result.hasErrors()) {
-            List<String> errors = result.getAllErrors().stream()
-                    .map(error -> error.getDefaultMessage())
-                    .collect(Collectors.toList());
-            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> saveTodo (@RequestBody @Valid Todo todo){
         Todo todoObject = todoService.saveTodo(todo);
         return new ResponseEntity<Todo>(todoObject, HttpStatus.CREATED);
     }

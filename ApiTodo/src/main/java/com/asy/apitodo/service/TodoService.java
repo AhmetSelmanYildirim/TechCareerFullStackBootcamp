@@ -29,13 +29,13 @@ public class TodoService {
     }
     public Todo updateTodo(Long todoId, Todo todo){
         if (todoRepository.existsById(todoId)) {
-            System.out.println("if");
+
             todo.setId(todoId);
             return todoRepository.save(todo);
         } else {
-            System.out.println("else");
             throw new TodoNotFoundException("Todo not found with id: " + todoId);
         }
+
     }
     public void deleteTodoById(Long todoId){
         if(todoRepository.existsById(todoId)){
