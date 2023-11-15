@@ -3,11 +3,14 @@ import React, { useEffect, useState, useContext } from "react";
 import { TodoContext } from "../context/TodoContext";
 
 function Todo({ todo }) {
+  // TodoContext'ten onUpdateTodo ve onDeleteTodo'yu alıyor.
   const { onUpdateTodo, onDeleteTodo } = useContext(TodoContext);
+  // checkStyle state'i oluşturuyor
   const [checkStyle, setCheckStyle] = useState({
     textDecoration: todo.completed ? "line-through" : "none",
     color: todo.completed ? "red" : "white",
   });
+  // useEffect kullanarak checkStyle'ı güncelliyor, her todo değiştiğinde tetiklenir.
   useEffect(() => {
     setCheckStyle({
       textDecoration: todo.completed ? "line-through" : "none",
@@ -20,13 +23,15 @@ function Todo({ todo }) {
     width: "15px",
   };
 
+  // Todo'nun tamamlanıp tamamlanmadığını güncelleyen fonksiyon.
   const checkTodo = async (todo) => {
     axios
       .put(`http://localhost:4000/api/todo/${todo.id}`, {
         id: todo.id,
         title: todo.title,
-        completed: !todo.completed,
+        completed: !todo.completed, // Tamamlanma durumunu tersine çeviriyor.
       })
+      // serverdan olumlu cevap geldiyse state güncelleniyor.
       .then((response) => {
         response.data &&
           onUpdateTodo({
@@ -36,6 +41,7 @@ function Todo({ todo }) {
       });
   };
 
+  // Todo başlığını güncelleyen fonksiyon.
   const updateTodoTitle = async () => {
     const newTitle = prompt("Reset title: ");
     if (newTitle) {
@@ -57,6 +63,7 @@ function Todo({ todo }) {
     }
   };
 
+  // Todo'yu silen fonksiyon.
   const deleteTodo = async () => {
     axios
       .delete(`http://localhost:4000/api/todo/delete/${todo.id}`)
@@ -85,12 +92,14 @@ function Todo({ todo }) {
           width: "10%",
         }}
       >
+        {/* Todo'nun tamamlanma durumunu değiştiren checkbox */}
         <input
           onClick={() => checkTodo(todo)}
           style={buttonStyle}
           type="checkbox"
           defaultChecked={todo.completed}
         />
+        {/* Todo başlığını güncellemeye yarayan kalem simgesi */}
         <svg
           style={buttonStyle}
           onClick={updateTodoTitle}
@@ -99,6 +108,7 @@ function Todo({ todo }) {
         >
           <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
         </svg>
+        {/* Todo'yu silmeye yarayan çöp kutusu simgesi */}
         <svg
           style={buttonStyle}
           onClick={deleteTodo}

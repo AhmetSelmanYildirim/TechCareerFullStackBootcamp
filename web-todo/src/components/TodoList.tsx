@@ -6,6 +6,7 @@ function TodoList() {
   const { todoList, deleteDoneTasks, deleteAllTasks } = useContext(TodoContext);
   const [status, setStatus] = useState("all");
 
+  // Stil objeleri
   const statusButtonStyle = {
     backgroundColor: "blue",
     padding: "10px",
@@ -30,6 +31,7 @@ function TodoList() {
       }}
     >
       <h2>TodoList</h2>
+      {/* Durum butonları */}
       <div
         style={{
           display: "flex",
@@ -38,6 +40,7 @@ function TodoList() {
           marginBottom: "20px",
         }}
       >
+        {/* Durumları filtrelemek için butonlar */}
         <div onClick={() => setStatus("all")} style={statusButtonStyle}>
           All
         </div>
@@ -48,6 +51,7 @@ function TodoList() {
           Todo
         </div>
       </div>
+      {/* Todo listesi */}
       {todoList.length > 0 ? (
         status === "all" ? (
           todoList.map((todo, index) => (
@@ -70,6 +74,7 @@ function TodoList() {
         <div>Todo list is empty</div>
       )}
 
+      {/* Görevleri silme butonları */}
       <div
         style={{
           display: "flex",
