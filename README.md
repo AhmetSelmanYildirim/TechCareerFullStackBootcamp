@@ -59,6 +59,28 @@ docker-compose up
 
 ---
 
+### Backend Commands
+
+**backend project path**
+
+```bash
+cd ./ApiTodo
+```
+
+**install dependencies**
+
+```bash
+mvn clean install
+```
+
+**run project**
+
+```bash
+mvn spring-boot:run
+```
+
+---
+
 ### Frontend Commands
 
 **frontend project path**
