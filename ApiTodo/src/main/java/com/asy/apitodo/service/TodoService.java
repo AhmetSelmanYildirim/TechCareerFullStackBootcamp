@@ -11,15 +11,21 @@ import java.util.List;
 @Service
 public class TodoService {
 
+    // INJECTION
     @Autowired
     private ITodoRepository todoRepository;
 
+    // CREATE
     public Todo saveTodo(Todo todo){
         return todoRepository.save(todo);
     }
+
+    // LIST
     public List<Todo> findAllTodo(){
         return todoRepository.findAll();
     }
+
+    // FIND BY ID
     public Todo findTodoById(Long todoId){
         if(todoRepository.existsById(todoId)){
             return todoRepository.findById(todoId).get();
@@ -27,6 +33,8 @@ public class TodoService {
             throw new TodoNotFoundException("Todo not found with id: " + todoId);
         }
     }
+
+    // UPDATE
     public Todo updateTodo(Long todoId, Todo todo){
         if (todoRepository.existsById(todoId)) {
 
@@ -35,8 +43,9 @@ public class TodoService {
         } else {
             throw new TodoNotFoundException("Todo not found with id: " + todoId);
         }
-
     }
+
+    // DELETE BY ID
     public void deleteTodoById(Long todoId){
         if(todoRepository.existsById(todoId)){
             todoRepository.deleteById(todoId);
@@ -44,10 +53,13 @@ public class TodoService {
             throw new TodoNotFoundException("Todo not found with id: " + todoId);
         }
     }
+
+    // DELETE ALL
     public void deleteAll(){
         todoRepository.deleteAll();
     }
 
+    // DELETE COMPLETED
     public void deleteCompletedTodos() {
         todoRepository.deleteCompletedTodos();
     }
